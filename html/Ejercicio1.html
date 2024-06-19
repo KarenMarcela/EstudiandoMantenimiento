@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .cajas_texto{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            justify-content: center;
+            gap: 10px;
+            
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="cajas_texto">
+        <input type="number" id="caja_uno" placeholder="Ingresa un numero">
+        <input type="number" id="caja_dos" placeholder="Ingrese un numero" disabled>
+    </div>
+    <div id="print"></div>
+    
+    <button id="hid_limpiar" onclick="limpiar()" hidden>ENVIAR</button>
+
+
+    <script>
+        var caja_uno = document.getElementById("caja_uno").value;
+        var caja_dos = document.getElementById("caja_dos");
+        if(caja_uno.length > 0){
+            caja_dos.disabled = false;
+        }else{
+            caja_dos.disabled = true;
+        }
+        function limpiar(){
+
+            document.getElementById("caja_uno").value = "";
+            document.getElementById("caja_dos").value = "";
+            document.getElementById("print").value = "";
+            document.getElementById("hid_limpiar").hidden = true;
+        }
+    </script>
+</body>
+</html>
