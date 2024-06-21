@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: beige;
+            display: flex;
+            /* align-items: center; */
+            justify-content: center;
+            
+        }
+        .container{
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: center; */
+            padding: 20px;
+            border-radius: 20px;
+            background-color: bisque;
+            height: 600px;
+            width: 500px;
+        }
+        .resultados{
+            color: rgb(88, 80, 80);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cajas">
+            <h2><a href="../index.html">Volver atrás</a></h2>
+            <input type="text" placeholder="Ingresa una palabra" id="caja1" oninput="habCaja2()" onblur="validarPalabra()">
+            <input type="text" placeholder="Ingresa una letra" id="caja2" disabled>
+            <button onclick="agregarPalabra()" >Agregar palabra</button>
+            <button onclick="filtrarPorLetra()" >Filtrar por letra</button>
+            <button onclick="limpiar()" id="limpiar"> LIMPIAR</button>
+        </div>
+        <div class="resultados">
+            <div id="palabra"></div>
+            <div id="letra"></div>
+            <div id="resultados"></div>
+        </div>
+    </div>
+    <script>
+        let palabra = [];
+
+        function habCaja2(){
+            let caja1Value = document.getElementById("caja1").value.trim();
+            let caja2 = document.getElementById("caja2");
+            if(caja1Value.length > 0 ){
+                caja2.disabled = false;
+            }else{
+                caja2.disabled = true;
+            }
+        }
+
+        function validarPalabra(){
+            let caja1 = document.getElementById("caja1");
+            let valor = caja1.value.trim();
+            if(!isNaN(valor)){
+                Swal.fire({
+                    title: "Caracter no válido",
+                    text: "Ingrese solo letras",
+                    icon : "error",
+                    showConfirmButton : false,
+                    timer : 2000
+                    
+                })
+                caja1.value = ""; 
+                caja1.focus();
+            }
+        }
+
+        function agregarPalabra(){
+            let caja1= document.getElementById("caja1").value.trim();
+            if(caja1.length == 0){
+                Swal.fire({
+                    title: "Cajas de texto vacías",
+                    text: "Introduzca información en las cajas",
+                    icon : "error",
+                    showConfirmButton :false,
+                    timer : 2000
+                })
+                documet.getElementById("caja1").focus(); //Para remarcar que hace falta llenar la caja
+                return;
+            }
+            palabra.push(caja1); //Para agregar la palabra al array
+            document.getElementById("palabra").innerText += caja1 + " ";
+            document.getElementById("caja1").value = "";
+            document.getElementById("caja2").disabled = true;
+            
+        }
+
+        function filtrarPorLetra(){
+            let letra = document.getElementById("caja2").value.trim().toLowerCase();
+            let resultados = document.getElementById("resultados");
+            if(letra.length !== 1){
+                Swal.fire({
+                    title: "Error",
+                    text: "Solo puede ingresar una letra",
+                    icon : "error",
+                    showConfirmButton :false,
+                    timer : 2000
+                })
+                document.getElementById("caja2").focus();
+                return;
+            }
+            let palabrasConLetra = [];
+            let palabrasSinLeta= [ ];
+            for(let i = 0; i < palabra.length ;i++){
+                if(palabra[i].toLowerCase().includes(letra)){
+                    palabrasConLetra.push(palabra[i]);
+                }else{
+                    palabrasSinLetra.push(palabra[i]);
+                }
+            }
+            let  resultadosConLetra = "Palabras que contienen la letra ' "+letra+" ' :\n";
+            resultadosConLetra += palabrasConLetra.join(', ')+"\n\n";
+            let resultadosSinLetra = "Palabras que no contienen la letra' "+letra+"' :\n";
+            resultadosSinLetra += palabrasSinLeta.join(", ");
+
+            resultados.innerText = resultadosConLetra + resultadosSinLetra;
+            
+        }
+
+        function limpiar(){
+            document.getElementById("caja1").value = "";
+            document.getElementById("caja2").value = "";
+            document.getElementById("palabra").innerText = "";
+            document.getElementById("letra").innerText = "";
+            document.getElementById("resultados").innerText = "";
+            document.getElementById("caja2").disabled = true;
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
